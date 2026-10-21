@@ -21,7 +21,7 @@ I build and improve Java/Spring Boot APIs, web applications and integrations. I 
 
 These are inspectable portfolio demonstrations, with source code, screenshots and stated limits. They are not client case studies. Payment and subscription examples use simulations; RAG answer generation uses a local mock; cost and analytics examples include synthetic data. Live providers, production readiness, real-model quality and measurable business results require project-specific validation.
 
-## Two examples you can inspect
+## Three examples you can inspect
 
 ### A customer workflow connected to a Java backend
 
@@ -29,11 +29,23 @@ These are inspectable portfolio demonstrations, with source code, screenshots an
 
 An original capture from my Angular and Spring Boot demo. A similar engagement could focus on one customer workflow, its API and acceptance tests. Checkout payments in this example are simulated.
 
+[See the workflow screenshots and verification notes](https://github.com/MirceaStefanescu/Portfolio/blob/main/Full%20Stack%20E-commerce%20Application%20with%20Angular%20and%20Spring%20Boot/screenshots/README.md)
+
+### An order workflow with visible failure handling
+
+[![Original portfolio screenshot: a Java and Kafka order workflow reaches DELIVERED in a local demonstration](https://raw.githubusercontent.com/MirceaStefanescu/Portfolio/main/Event-Driven%20E-Commerce%20Platform/screenshots/action-saga-success.png)](https://github.com/MirceaStefanescu/Portfolio/tree/main/Event-Driven%20E-Commerce%20Platform)
+
+Need services to agree on what happened to an order? A first milestone could define one event contract, connect the relevant services and test the success and failure paths. This Java/Kafka example includes order progression, cancellation and compensation scenarios. Customers are synthetic and unauthenticated; payments, deliveries and notifications are simulated.
+
+[Inspect the success, cancellation and recovery scenarios](https://github.com/MirceaStefanescu/Portfolio/blob/main/Event-Driven%20E-Commerce%20Platform/screenshots/README.md)
+
 ### A repeatable starting point for software delivery
 
 [![Original portfolio screenshot: developer portal generating a GitHub Actions pipeline](https://raw.githubusercontent.com/MirceaStefanescu/Portfolio/main/Automated%20Infrastructure%20%26%20Deployment%20Platform/screenshots/action-github-pipeline.png)](https://github.com/MirceaStefanescu/Portfolio/tree/main/Automated%20Infrastructure%20%26%20Deployment%20Platform)
 
 An original capture of the pipeline generator. A first milestone could cover a reviewed build/test template and handover notes. The screenshot demonstrates generated configuration; it does not prove live cloud provisioning or production reliability.
+
+[See the generated pipeline and demonstration limits](https://github.com/MirceaStefanescu/Portfolio/blob/main/Automated%20Infrastructure%20%26%20Deployment%20Platform/screenshots/README.md)
 
 ## Start with a clear first milestone
 
