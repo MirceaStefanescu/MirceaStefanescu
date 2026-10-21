@@ -2,6 +2,8 @@
 
 I build and improve Java/Spring Boot APIs, web applications and integrations. I can help with a new workflow, a reproducible bug, service integration or a delivery process that needs clearer checks.
 
+I have **6+ years of professional software experience**. My background includes Java full-stack engineering at **EOS KSI Romania (April 2020–April 2023)** and Java/Spring microservices, Kafka and cloud delivery at **Cognizant Mobility (April 2023–August 2025)**. Since September 2025, I have worked independently as a Java backend engineer.
+
 **Have a project in mind?** [Email me](mailto:stefanescumircea1990@gmail.com) with your current stack, the problem and the outcome you need. Remote work; scope and availability agreed per project.
 
 [Explore the visual portfolio](https://mirceastefanescu.github.io/Portfolio/) · [Browse all 16 projects](https://github.com/MirceaStefanescu/Portfolio) · [Services and enquiry form](https://stefanescumircea1990.wordpress.com/software-services/)
