@@ -49,6 +49,10 @@ An original capture of the pipeline generator. A first milestone could cover a r
 
 [See the generated pipeline and demonstration limits](https://github.com/MirceaStefanescu/Portfolio/blob/main/Automated%20Infrastructure%20%26%20Deployment%20Platform/screenshots/README.md)
 
+<!-- PORTFOLIO_PROJECTS:BEGIN -->
+[Browse the current project directory](https://github.com/MirceaStefanescu/Portfolio#project-directory).
+<!-- PORTFOLIO_PROJECTS:END -->
+
 ## Start with a clear first milestone
 
 1. Describe the problem, expected behavior and relevant stack. Share only material you are authorized to share; omit passwords and production secrets.
