@@ -50,7 +50,28 @@ An original capture of the pipeline generator. A first milestone could cover a r
 [See the generated pipeline and demonstration limits](https://github.com/MirceaStefanescu/Portfolio/blob/main/Automated%20Infrastructure%20%26%20Deployment%20Platform/screenshots/README.md)
 
 <!-- PORTFOLIO_PROJECTS:BEGIN -->
-[Browse the current project directory](https://github.com/MirceaStefanescu/Portfolio#project-directory).
+## Project directory
+
+Current projects from [Portfolio](https://github.com/MirceaStefanescu/Portfolio#project-directory).
+
+| Capability | Project evidence |
+| --- | --- |
+| Developer self-service portal | [Automated Infrastructure & Deployment Platform](https://github.com/MirceaStefanescu/Portfolio/blob/main/Automated%20Infrastructure%20%26%20Deployment%20Platform/README.md) |
+| Backend APIs and resilient payments | [Cloud-Native E-Commerce Platform](https://github.com/MirceaStefanescu/Portfolio/blob/main/Cloud-Native%20E-Commerce%20Platform/README.md) |
+| Software supply chain checks | [DevSecOps Pipeline with SBOM & SLSA](https://github.com/MirceaStefanescu/Portfolio/blob/main/DevSecOps%20Pipeline%20with%20SBOM%20%26%20SLSA/README.md) |
+| Java integrations and order workflows | [Event-Driven E-Commerce Platform](https://github.com/MirceaStefanescu/Portfolio/blob/main/Event-Driven%20E-Commerce%20Platform/README.md) |
+| Web applications with a Java backend | [Full Stack E-commerce Application with Angular and Spring Boot](https://github.com/MirceaStefanescu/Portfolio/blob/main/Full%20Stack%20E-commerce%20Application%20with%20Angular%20and%20Spring%20Boot/README.md) |
+| Git-based Kubernetes delivery | [GitOps Platform - Argo CD & Helm](https://github.com/MirceaStefanescu/Portfolio/blob/main/GitOps%20Platform%20-%20Argo%20CD%20%26%20Helm/README.md) |
+| SaaS workflows and user dashboards | [Habit Tracker & Routine Coach SaaS](https://github.com/MirceaStefanescu/Portfolio/blob/main/Habit%20Tracker%20%26%20Routine%20Coach%20SaaS/README.md) |
+| Kubernetes cost visibility | [Kubernetes FinOps & Cost Optimization](https://github.com/MirceaStefanescu/Portfolio/blob/main/Kubernetes%20FinOps%20%26%20Cost%20Optimization/README.md) |
+| Repeatable LLM evaluation | [LLMOps Evaluation Harness](https://github.com/MirceaStefanescu/Portfolio/blob/main/LLMOps%20Evaluation%20Harness/README.md) |
+| Monitoring and incident diagnosis | [Observability - New Relic & Prometheus](https://github.com/MirceaStefanescu/Portfolio/blob/main/Observability%20-%20New%20Relic%20%26%20Prometheus/README.md) |
+| Streaming data and analytics APIs | [Predictive Analytics Pipeline on Kubernetes](https://github.com/MirceaStefanescu/Portfolio/blob/main/Predictive%20Analytics%20Pipeline%20on%20Kubernetes/README.md) |
+| Prompt regression and safety checks | [Prompt Quality & Safety](https://github.com/MirceaStefanescu/Portfolio/blob/main/Prompt%20Quality%20%26%20Safety/README.md) |
+| Real-time collaboration features | [Real-Time Chat & Collaboration Platform](https://github.com/MirceaStefanescu/Portfolio/blob/main/Real-Time%20Chat%20%26%20Collaboration%20Platform/README.md) |
+| Document search and RAG APIs | [Secure RAG Service & Knowledge API](https://github.com/MirceaStefanescu/Portfolio/blob/main/Secure%20RAG%20Service%20%26%20Knowledge%20API/README.md) |
+| Application secrets and operational visibility | [Secure Secrets Management & Observability Toolkit](https://github.com/MirceaStefanescu/Portfolio/blob/main/Secure%20Secrets%20Management%20%26%20Observability%20Toolkit/README.md) |
+| Build and deployment automation | [CI/CD Pipeline Automation](https://github.com/MirceaStefanescu/Portfolio/blob/main/CI/CD%20Pipeline%20Automation/README.md) |
 <!-- PORTFOLIO_PROJECTS:END -->
 
 ## Start with a clear first milestone
