@@ -5,7 +5,7 @@ Destination: only the PORTFOLIO_PROJECTS block in this repository's README.md.
 The biography, contact details, services and screenshots outside the block are
 preserved byte for byte.
 
-## Automatic checked PR route
+## Checked PR route with native workflow approval
 
 The existing hourly check at minute 37 UTC remains in place. It also runs when
 the sync implementation changes on main, through Actions → Sync Portfolio
@@ -17,22 +17,31 @@ main commit with successful Portfolio CI, reads immutable file content, and
 verifies that neither main branch moved during preparation. If the directory
 already matches, it reports UNCHANGED and performs no write.
 
-A change is proposed on the managed branch and opened as a PR. The workflow
-dispatches Profile CI explicitly: writes made with GITHUB_TOKEN do not trigger
-push workflows, and bot-created pull-request workflows can require approval.
-The explicit dispatch validates the managed branch without executing its code
-with a write token. The sync job always checks out trusted main, never PR code.
+A change is proposed on the managed branch and opened as a PR. GitHub puts
+pull-request workflows created by GITHUB_TOKEN into an approval-required state.
+Open that PR, inspect Files changed to confirm the expected README-only update,
+and select Approve workflows to run in its merge panel. This maintainer action
+is required for each new bot PR; the sync does not approve its own checks.
+After approval, native pull-request CI runs with its restricted job permissions.
+The sync job always checks out trusted main, never PR code.
+
+A branch workflow_dispatch is not a substitute: GitHub does not accept its job
+checks as required PR status checks. No personal token, new GitHub App credential
+or alternate check-reporting route is used to avoid the approval requirement.
 
 The sync job merges through the normal PR API only after all these conditions:
 the PR is owned by github-actions[bot], its source/base identities are current,
 its only changed file is the existing README.md, its complete proposed text
-matches the expected managed-block update, the latest Profile CI dispatch has
-succeeded, and GitHub reports all merge requirements satisfied. The merge request
+matches the expected managed-block update, the latest native Profile CI run is
+associated with this PR's exact head and base and has succeeded, and GitHub
+reports all merge requirements satisfied. The merge request
 includes the exact reviewed head SHA. A failed, cancelled, pending or newer
 failed CI attempt cannot borrow an older successful result.
 
-Native protection requires Profile status, resolved review discussions and
-CodeQL at the configured severity thresholds. A merge is never forced. After a
+Native protection requires Profile status and resolved review discussions.
+Profile status includes the Python CodeQL job; the separate CodeQL results rule
+enforces severity thresholds after a main-branch analysis baseline is available.
+A merge is never forced. After a
 confirmed merge, the exact committed README is read back and Profile CI is
 explicitly dispatched on main. No direct writes to main occur.
 
@@ -62,14 +71,21 @@ future schedule. Local files are not synchronized by this workflow.
 python3 scripts/sync_portfolio.py. Applying requires --apply and the built-in
 GH_TOKEN; use the existing workflow instead of putting credentials in files.
 
-To stop the sync, use Disable workflow in Actions. If an update must be undone,
-disable the sync first and open a revert PR through the same required checks. Preserve
-the managed markers and inspect any existing automation branch before retrying.
-Do not use direct pushes or force pushes for recovery.
+To stop the sync, open Actions → Sync Portfolio project directory → Disable
+workflow. Disabling prevents new runs but does not cancel queued or running
+runs: cancel those existing sync runs and wait for them to reach a terminal
+state before recovery. Check whether any PR already merged. If an update must
+be undone, keep the sync disabled and open a revert PR through the same required
+checks. Preserve the managed markers and inspect any existing automation branch
+before retrying. Correct the source directory in Portfolio main through its own
+reviewed PR and passing CI before re-enabling sync; otherwise keep sync disabled
+so it cannot propose the reverted content again. Do not use direct pushes or
+force pushes for recovery.
 
 The workflow uses a standard Ubuntu runner in a public repository and no paid
 service. References:
 [GitHub Actions billing](https://docs.github.com/en/actions/concepts/billing-and-usage),
 [GITHUB_TOKEN and event behavior](https://docs.github.com/en/actions/concepts/security/github_token),
+[Required status check event restrictions](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks),
 [Disable or enable workflows](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows).
 

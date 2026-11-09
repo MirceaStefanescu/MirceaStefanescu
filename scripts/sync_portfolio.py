@@ -59,7 +59,7 @@ class GitHub:
                 and re.fullmatch("[0-9a-f]{40}", payload.get("sha", ""))
             ) or (
                 method == "POST" and path == prefix + "/actions/workflows/profile-ci.yml/dispatches"
-                and payload.get("ref") in (BRANCH, "main")
+                and payload.get("ref") == "main"
             )
             if not permitted:
                 raise ValueError("Write outside the managed PR route")
@@ -158,10 +158,25 @@ def main_head(api, repo):
     return sha
 
 
-def dispatch(api, branch):
-    """Explicitly run CI because GITHUB_TOKEN pushes do not trigger push workflows."""
+def dispatch_main(api):
+    """Verify main after a bot merge; dispatch checks never authorize a PR."""
     api(f"/repos/{TARGET}/actions/workflows/profile-ci.yml/dispatches",
-        {"ref": branch}, method="POST")
+        {"ref": "main"}, method="POST")
+
+
+def latest_pr_run(runs, pr):
+    """Require native PR CI associated with this exact head, base and repository."""
+    eligible = [r for r in runs["workflow_runs"]
+                if r.get("event") == "pull_request"
+                and r.get("path") == PROFILE_WORKFLOW
+                and r.get("head_sha") == pr["head"]["sha"]
+                and r.get("head_branch") == BRANCH
+                and r.get("head_repository", {}).get("full_name") == TARGET
+                and any(p.get("number") == pr["number"]
+                        and p.get("head", {}).get("sha") == pr["head"]["sha"]
+                        and p.get("base", {}).get("sha") == pr["base"]["sha"]
+                        for p in r.get("pull_requests", []))]
+    return max(eligible, key=lambda r: (r["run_number"], r.get("run_attempt", 1))) if eligible else None
 
 
 def finish_pull(api, pr, source_sha, target_sha, expected):
@@ -184,10 +199,11 @@ def finish_pull(api, pr, source_sha, target_sha, expected):
     if decode_file(api(f"/repos/{TARGET}/contents/README.md?ref={head}")) != expected:
         raise ValueError("Managed PR content differs from the current source and profile")
     runs = api(f"/repos/{TARGET}/actions/workflows/profile-ci.yml/runs?head_sha={head}&per_page=100")
-    latest = latest_run(runs, head, PROFILE_WORKFLOW, BRANCH)
+    latest = latest_pr_run(runs, pr)
     if not latest:
-        dispatch(api, BRANCH)
-        return {"status": "CHECKS_REQUESTED", "pull_request": number}
+        return {"status": "WAITING_FOR_NATIVE_PR_CHECKS", "pull_request": number}
+    if latest.get("conclusion") == "action_required" or latest.get("status") == "action_required":
+        return {"status": "WAITING_FOR_CHECK_APPROVAL", "pull_request": number}
     if latest.get("status") != "completed":
         return {"status": "WAITING_FOR_CHECKS", "pull_request": number}
     if latest.get("conclusion") != "success":
@@ -203,7 +219,7 @@ def finish_pull(api, pr, source_sha, target_sha, expected):
     commit = result["sha"]
     if decode_file(api(f"/repos/{TARGET}/contents/README.md?ref={commit}")) != expected:
         raise ValueError("Merged content verification failed; inspect before retrying")
-    dispatch(api, "main")
+    dispatch_main(api)
     return {"status": "MERGED", "source_sha": source_sha, "profile_commit": commit,
             "pull_request": number}
 
@@ -264,9 +280,9 @@ def synchronize(api, apply=False):
         "head": BRANCH, "base": "main",
         "body": f"{MARKER}\nSource: {source_sha}\nBase: {target_sha}\n\n"
                 "Updates only the managed project table after successful Portfolio main CI. "
-                "Profile checks and native merge requirements must pass before the sync job can merge.",
+                "Inspect the README-only diff, then use Approve workflows to run in this PR. "
+                "Native PR checks and merge requirements must pass before the sync job can merge.",
         "maintainer_can_modify": False}, method="POST")
-    dispatch(api, BRANCH)
     return {"status": "PR_OPENED", "source_sha": source_sha, "profile_commit": head,
             "pull_request": pr["number"]}
 

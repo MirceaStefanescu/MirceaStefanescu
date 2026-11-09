@@ -113,9 +113,13 @@ class FakeAPI:
         raise AssertionError(path)
 
     def passed_profile_ci(self):
-        """Publish successful dispatch evidence for the proposed commit."""
+        """Publish native PR evidence for the exact proposed commit and base."""
         self.profile_runs = [{"head_sha": self.head_sha, "head_branch": BRANCH,
-                              "path": PROFILE_WORKFLOW, "event": "workflow_dispatch",
+                              "path": PROFILE_WORKFLOW, "event": "pull_request",
+                              "head_repository": {"full_name": TARGET},
+                              "pull_requests": [{"number": 1,
+                                                 "head": {"sha": self.head_sha},
+                                                 "base": {"sha": self.main_sha}}],
                               "run_number": 1, "run_attempt": 1,
                               "status": "completed", "conclusion": "success"}]
 
@@ -230,6 +234,49 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(synchronize(api, True)["status"], "WAITING_FOR_CHECKS")
         self.assertEqual(api.profile, PROFILE)
 
+    def test_dispatch_cannot_authorize_managed_pr_merge(self):
+        """A green branch dispatch cannot substitute for native PR checks."""
+        api = FakeAPI()
+        synchronize(api, True)
+        api.passed_profile_ci()
+        api.profile_runs[0]["event"] = "workflow_dispatch"
+        count = len(api.writes)
+        self.assertEqual(synchronize(api, True)["status"], "WAITING_FOR_NATIVE_PR_CHECKS")
+        self.assertEqual(api.profile, PROFILE)
+        self.assertEqual(len(api.writes), count)
+
+    def test_native_ci_must_belong_to_current_pr_head_and_base(self):
+        """Unrelated or stale run associations cannot authorize a merge."""
+        mutations = [
+            lambda run: run.update(pull_requests=[]),
+            lambda run: run["pull_requests"][0].update(number=2),
+            lambda run: run["pull_requests"][0]["head"].update(sha="e" * 40),
+            lambda run: run["pull_requests"][0]["base"].update(sha="e" * 40),
+            lambda run: run["head_repository"].update(full_name="other/repo"),
+        ]
+        for mutate in mutations:
+            api = FakeAPI()
+            synchronize(api, True)
+            api.passed_profile_ci()
+            mutate(api.profile_runs[0])
+            count = len(api.writes)
+            with self.subTest(mutate=mutate):
+                self.assertEqual(synchronize(api, True)["status"], "WAITING_FOR_NATIVE_PR_CHECKS")
+            self.assertEqual(api.profile, PROFILE)
+            self.assertEqual(len(api.writes), count)
+
+    def test_approval_is_left_to_the_native_maintainer_control(self):
+        """Approval-required CI waits without dispatching or approving itself."""
+        api = FakeAPI()
+        synchronize(api, True)
+        count = len(api.writes)
+        self.assertEqual(synchronize(api, True)["status"], "WAITING_FOR_NATIVE_PR_CHECKS")
+        api.passed_profile_ci()
+        api.profile_runs[0].update(status="completed", conclusion="action_required")
+        self.assertEqual(synchronize(api, True)["status"], "WAITING_FOR_CHECK_APPROVAL")
+        self.assertEqual(len(api.writes), count)
+        self.assertEqual(api.profile, PROFILE)
+
     def test_failed_latest_profile_attempt_blocks_old_success(self):
         """A failed rerun cannot borrow an earlier passing result."""
         api = FakeAPI()
@@ -299,6 +346,8 @@ class SyncTests(unittest.TestCase):
             (f"/repos/{TARGET}/git/refs/heads/{BRANCH}", {"sha": SHA, "force": True}, "PATCH"),
             (f"/repos/{TARGET}/pulls", {"head": "unknown", "base": "main"}, "POST"),
             (f"/repos/{SOURCE}/pulls/1/merge", {"sha": SHA, "merge_method": "merge"}, "PUT"),
+            (f"/repos/{TARGET}/actions/workflows/profile-ci.yml/dispatches", {"ref": BRANCH}, "POST"),
+            (f"/repos/{TARGET}/actions/runs/1/approve", {}, "POST"),
         ]
         for path, payload, method in cases:
             with self.subTest(path=path), self.assertRaises(ValueError):

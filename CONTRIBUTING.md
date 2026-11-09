@@ -48,7 +48,10 @@ offline test suite makes no network requests.
 
 ## Sync and recovery
 
-See [SYNC.md](SYNC.md) for the automatic PR route, stop conditions and recovery.
+See [SYNC.md](SYNC.md) for the checked PR route, native workflow approval,
+stop conditions and recovery. Bot-created PRs require a maintainer to inspect
+the diff and select Approve workflows to run before native PR CI can start.
+An explicit workflow dispatch verifies a branch but cannot satisfy PR rules.
 A failed check is investigated before merging. Do not remove the required
 checks, bypass branch protection or push directly to main.
 
