@@ -46,10 +46,17 @@ confirmed merge, the exact committed README is read back and Profile CI is
 explicitly dispatched on main. No direct writes to main occur.
 If that dispatch fails, the result preserves MERGED and the verified commit,
 adds main_ci_dispatch: unconfirmed and dispatch_error, and exits with failure
-so the missing CI request is visible. Inspect Actions for that exact main SHA;
-if no run exists, use Profile CI → Run workflow on main. Confirm the exact SHA
-and successful result before calling verification complete. Do not repeat the
-merge; later sync checks can correctly report UNCHANGED.
+so the missing CI request is visible. Inspect Actions for the recorded
+profile_commit SHA. If no run exists and main still points to that SHA, use
+Profile CI → Run workflow on main. If main has advanced, create a new temporary
+branch named recovery/profile-ci-<profile_commit> at the recorded full SHA,
+verify its head matches, then select that branch in Profile CI → Run workflow.
+Do not overwrite an existing recovery branch or move main backwards. Confirm
+the run's exact head SHA and successful result before calling that commit
+verified; retain the recovery branch until its verification receipt is checked.
+Also verify current main separately at its own exact SHA, since testing the
+historical commit does not verify later changes. Do not repeat the merge;
+later sync checks can correctly report UNCHANGED.
 
 ## Ownership, permissions and limits
 
