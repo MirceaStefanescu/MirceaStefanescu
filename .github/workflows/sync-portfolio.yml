@@ -9,6 +9,10 @@ on:
     paths:
       - '.github/workflows/sync-portfolio.yml'
       - 'scripts/**'
+  workflow_run:
+    workflows: ['Profile CI']
+    types: [completed]
+    branches: ['automation/portfolio-sync']
 
 permissions:
   contents: read
@@ -19,18 +23,28 @@ concurrency:
 
 jobs:
   sync:
-    if: github.repository == 'MirceaStefanescu/MirceaStefanescu' && github.event.repository.private == false
+    if: >-
+      github.repository == 'MirceaStefanescu/MirceaStefanescu' &&
+      github.event.repository.private == false &&
+      (github.event_name != 'workflow_run' ||
+       (github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'pull_request' &&
+        github.event.workflow_run.head_repository.full_name == github.repository))
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       contents: write
+      pull-requests: write
+      actions: write
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
+          ref: main
           persist-credentials: false
-      - name: Test safety, preservation and repeatability
-        run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
-      - name: Update only the managed project directory
+      - name: Test preservation and the bounded PR route
+        run: python3 -m unittest discover -s scripts -p 'test_sync_portfolio.py' -v
+      - name: Propose or merge only the verified managed project directory
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/sync_portfolio.py --apply
+
