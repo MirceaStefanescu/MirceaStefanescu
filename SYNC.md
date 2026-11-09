@@ -62,8 +62,8 @@ future schedule. Local files are not synchronized by this workflow.
 python3 scripts/sync_portfolio.py. Applying requires --apply and the built-in
 GH_TOKEN; use the existing workflow instead of putting credentials in files.
 
-Stop using Disable workflow in Actions. If an update must be undone, disable
-the sync first and open a revert PR through the same required checks. Preserve
+To stop the sync, use Disable workflow in Actions. If an update must be undone,
+disable the sync first and open a revert PR through the same required checks. Preserve
 the managed markers and inspect any existing automation branch before retrying.
 Do not use direct pushes or force pushes for recovery.
 
