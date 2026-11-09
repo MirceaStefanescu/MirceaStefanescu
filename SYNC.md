@@ -44,6 +44,12 @@ enforces severity thresholds after a main-branch analysis baseline is available.
 A merge is never forced. After a
 confirmed merge, the exact committed README is read back and Profile CI is
 explicitly dispatched on main. No direct writes to main occur.
+If that dispatch fails, the result preserves MERGED and the verified commit,
+adds main_ci_dispatch: unconfirmed and dispatch_error, and exits with failure
+so the missing CI request is visible. Inspect Actions for that exact main SHA;
+if no run exists, use Profile CI → Run workflow on main. Confirm the exact SHA
+and successful result before calling verification complete. Do not repeat the
+merge; later sync checks can correctly report UNCHANGED.
 
 ## Ownership, permissions and limits
 
@@ -81,6 +87,20 @@ before retrying. Correct the source directory in Portfolio main through its own
 reviewed PR and passing CI before re-enabling sync; otherwise keep sync disabled
 so it cannot propose the reverted content again. Do not use direct pushes or
 force pushes for recovery.
+
+If a managed PR is stale because its recorded source or base changed, closing
+it alone is insufficient: the script will refuse to reuse an unmerged branch.
+After stopping and cancelling sync as above, inspect the PR and the current
+automation/portfolio-sync branch. Record their exact head SHA and preserve that
+commit in a separately named archive branch; verify the archive points to the
+same SHA, and retain any needed work for a separately reviewed PR. Only with
+owner confirmation, and after verifying no other open PR depends on this
+obsolete branch, close the stale managed PR without merging and delete only
+automation/portfolio-sync. Do not remove the archive or any unknown branch.
+If ownership or preservation is uncertain, keep sync disabled and stop.
+Once the source is correct with passing CI, re-enable sync and run it again:
+it creates a fresh branch from current main and a new PR, whose native workflows
+still require maintainer approval. No force push or direct-main repair is used.
 
 The workflow uses a standard Ubuntu runner in a public repository and no paid
 service. References:

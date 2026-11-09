@@ -219,9 +219,18 @@ def finish_pull(api, pr, source_sha, target_sha, expected):
     commit = result["sha"]
     if decode_file(api(f"/repos/{TARGET}/contents/README.md?ref={commit}")) != expected:
         raise ValueError("Merged content verification failed; inspect before retrying")
-    dispatch_main(api)
-    return {"status": "MERGED", "source_sha": source_sha, "profile_commit": commit,
-            "pull_request": number}
+    receipt = {"status": "MERGED", "source_sha": source_sha, "profile_commit": commit,
+               "pull_request": number}
+    try:
+        dispatch_main(api)
+        receipt["main_ci_dispatch"] = "requested"
+    except (HTTPError, OSError, ValueError) as error:
+        # The merge and content readback already succeeded. Preserve that fact
+        # without claiming main CI started or retrying an uncertain dispatch.
+        receipt["main_ci_dispatch"] = "unconfirmed"
+        receipt["dispatch_error"] = (f"HTTP {error.code}" if isinstance(error, HTTPError)
+                                     else type(error).__name__)
+    return receipt
 
 
 def prepare_branch(api, target_sha):
@@ -294,7 +303,10 @@ if __name__ == "__main__":
     try:
         if args.apply and not os.environ.get("GH_TOKEN"):
             raise ValueError("GH_TOKEN is required for apply")
-        print(json.dumps(synchronize(GitHub(os.environ.get("GH_TOKEN")), args.apply)))
+        receipt = synchronize(GitHub(os.environ.get("GH_TOKEN")), args.apply)
+        print(json.dumps(receipt))
+        if receipt.get("dispatch_error"):
+            sys.exit(1)
     except (ValueError, KeyError, HTTPError, OSError) as error:
         print(f"Sync stopped: {type(error).__name__}: " +
               (f"HTTP {error.code}" if isinstance(error, HTTPError) else

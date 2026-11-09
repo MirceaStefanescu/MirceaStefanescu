@@ -44,6 +44,7 @@ class FakeAPI:
         self.changed_files = [{"filename": "README.md", "status": "modified"}]
         self.merge_state = "clean"
         self.merge_result = True
+        self.dispatch_error = None
 
     def __call__(self, path, payload=None, method=None):
         """Apply allowed fake API transitions and retain a complete write ledger."""
@@ -71,6 +72,8 @@ class FakeAPI:
                            "mergeable": True, "mergeable_state": self.merge_state}
                 return copy.deepcopy(self.pr)
             if path.endswith("/dispatches"):
+                if self.dispatch_error:
+                    raise self.dispatch_error
                 return {}
             if path.endswith("/merge"):
                 if self.merge_result:
@@ -336,6 +339,22 @@ class SyncTests(unittest.TestCase):
             synchronize(api, True)
         self.assertEqual(api.profile, PROFILE)
         self.assertEqual(api.writes[-1]["method"], "PUT")
+
+    def test_postmerge_dispatch_failure_preserves_the_merge_receipt(self):
+        """A later CI API failure cannot erase the already verified merge result."""
+        api = FakeAPI()
+        synchronize(api, True)
+        api.passed_profile_ci()
+        api.dispatch_error = HTTPError("https://api.github.com/", 503, "Unavailable", {}, None)
+        result = synchronize(api, True)
+        self.assertEqual(result["status"], "MERGED")
+        self.assertEqual(result["profile_commit"], api.merge_sha)
+        self.assertEqual(result["main_ci_dispatch"], "unconfirmed")
+        self.assertEqual(result["dispatch_error"], "HTTP 503")
+        self.assertEqual(api.profile, api.proposed)
+        count = len(api.writes)
+        self.assertEqual(synchronize(api, True)["status"], "UNCHANGED")
+        self.assertEqual(len(api.writes), count)
 
     def test_no_main_or_force_write_can_reach_network(self):
         """The transport independently rejects bypasses of the managed PR route."""
