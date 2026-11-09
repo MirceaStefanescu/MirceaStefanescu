@@ -50,7 +50,6 @@ An original capture of the pipeline generator. A first milestone could cover a r
 [See the generated pipeline and demonstration limits](https://github.com/MirceaStefanescu/Portfolio/blob/main/Automated%20Infrastructure%20%26%20Deployment%20Platform/screenshots/README.md)
 
 <!-- PORTFOLIO_PROJECTS:BEGIN -->
-
 ## Project directory
 
 Current projects from [Portfolio](https://github.com/MirceaStefanescu/Portfolio#project-directory).
