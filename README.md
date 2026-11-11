@@ -1,12 +1,12 @@
-# Mircea Stefanescu | Remote Software Developer
+# Mircea Stefanescu | Web Apps, APIs, Cloud & AI Integration
 
-I build and improve Java/Spring Boot APIs, web applications and integrations. I can help with a new workflow, a reproducible bug, service integration or a delivery process that needs clearer checks.
+I help teams build and improve web applications, APIs, system integrations and delivery workflows. A first milestone can focus on one working feature, a reproducible defect, a pipeline or a document-retrieval/evaluation integration, with clear acceptance checks.
 
-I have **6+ years of professional software experience**. My background includes Java full-stack engineering at **EOS KSI Romania (April 2020–April 2023)** and Java/Spring microservices, Kafka and cloud delivery at **Cognizant Mobility (April 2023–August 2025)**. Since September 2025, I have worked independently as a Java backend engineer.
+I have **5+ years of professional Java/backend experience**. My background includes Java full-stack engineering at **EOS KSI Romania (April 2020–April 2023)** and Java/Spring microservices, Kafka and cloud delivery at **Cognizant Mobility (April 2023–August 2025)**. **Since September 2025, I have developed personal portfolio projects**, demonstrating web, cloud, data and AI integration/evaluation capabilities with source code, tests and local demonstrations.
 
-**Have a project in mind?** [Email me](mailto:stefanescumircea1990@gmail.com) with your current stack, the problem and the outcome you need. Remote work; scope and availability agreed per project.
+**Have a project in mind?** [Email me](mailto:stefanescumircea1990@gmail.com) with your current stack, the problem and the outcome you need. Freelance/B2B, **fully remote from Bucharest, Romania, using my own computer**; scope and availability agreed per project.
 
-[Explore the visual portfolio](https://mirceastefanescu.github.io/Portfolio/) · [Browse all 16 projects](https://github.com/MirceaStefanescu/Portfolio) · [Services and enquiry form](https://stefanescumircea1990.wordpress.com/software-services/)
+[Explore the visual portfolio](https://mirceastefanescu.github.io/Portfolio/) · [Service details and diagnostics](https://github.com/MirceaStefanescu/Portfolio/blob/main/SERVICES.md) · [Browse all 16 projects](https://github.com/MirceaStefanescu/Portfolio) · [Services and enquiry form](https://stefanescumircea1990.wordpress.com/software-services/)
 
 ## What I can help you build or improve
 
@@ -33,13 +33,13 @@ An original capture from my Angular and Spring Boot demo. A similar engagement c
 
 [See the workflow screenshots and verification notes](https://github.com/MirceaStefanescu/Portfolio/blob/main/Full%20Stack%20E-commerce%20Application%20with%20Angular%20and%20Spring%20Boot/screenshots/README.md)
 
-### An order workflow with visible failure handling
+### Document retrieval with controlled access
 
-[![Original portfolio screenshot: a Java and Kafka order workflow reaches DELIVERED in a local demonstration](https://raw.githubusercontent.com/MirceaStefanescu/Portfolio/main/Event-Driven%20E-Commerce%20Platform/screenshots/action-saga-success.png)](https://github.com/MirceaStefanescu/Portfolio/blob/main/Event-Driven%20E-Commerce%20Platform/README.md)
+[![Original portfolio screenshot: a successful query against the local document-retrieval API](https://raw.githubusercontent.com/MirceaStefanescu/Portfolio/main/Secure%20RAG%20Service%20%26%20Knowledge%20API/screenshots/action-rag-api-05.png)](https://github.com/MirceaStefanescu/Portfolio/blob/main/Secure%20RAG%20Service%20%26%20Knowledge%20API/README.md)
 
-Need services to agree on what happened to an order? A first milestone could define one event contract, connect the relevant services and test the success and failure paths. This Java/Kafka example includes order progression, cancellation and compensation scenarios. Customers are synthetic and unauthenticated; payments, deliveries and notifications are simulated.
+Need an application to search a document collection? A first milestone could connect authenticated ingestion and query endpoints, define access rules and add retrieval evaluation cases. This personal demonstration includes hybrid retrieval, caching and vector-store recovery checks. Answer generation uses a local mock; a client's documents, a real model and live provider integrations need separate configuration and evaluation.
 
-[Inspect the success, cancellation and recovery scenarios](https://github.com/MirceaStefanescu/Portfolio/blob/main/Event-Driven%20E-Commerce%20Platform/screenshots/README.md)
+[Inspect retrieval, access-control and recovery demonstrations](https://github.com/MirceaStefanescu/Portfolio/blob/main/Secure%20RAG%20Service%20%26%20Knowledge%20API/screenshots/README.md)
 
 ### A repeatable starting point for software delivery
 
