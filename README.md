@@ -4,9 +4,9 @@ I build and improve Java/Spring Boot APIs, web applications and integrations. I 
 
 I have **6+ years of professional software experience**. My background includes Java full-stack engineering at **EOS KSI Romania (April 2020–April 2023)** and Java/Spring microservices, Kafka and cloud delivery at **Cognizant Mobility (April 2023–August 2025)**. Since September 2025, I have worked independently as a Java backend engineer.
 
-**Have a project in mind?** [Email me](mailto:stefanescumircea1990@gmail.com) with your current stack, the problem and the outcome you need. Remote work; scope and availability agreed per project.
+**Have a project in mind?** [Use the project enquiry form](https://stefanescumircea1990.wordpress.com/software-services/?utm_source=github&utm_medium=portfolio&utm_campaign=it_services_202611#project-enquiry) with your current stack, the problem and the outcome you need. Remote work; scope and availability agreed per project.
 
-[Explore the visual portfolio](https://mirceastefanescu.github.io/Portfolio/) · [Browse all 16 projects](https://github.com/MirceaStefanescu/Portfolio) · [Services and enquiry form](https://stefanescumircea1990.wordpress.com/software-services/)
+[Explore the visual portfolio](https://mirceastefanescu.github.io/Portfolio/) · [Browse all 16 projects](https://github.com/MirceaStefanescu/Portfolio) · [Services and enquiry form](https://stefanescumircea1990.wordpress.com/software-services/?utm_source=github&utm_medium=portfolio&utm_campaign=it_services_202611#project-enquiry)
 
 ## What I can help you build or improve
 
@@ -84,4 +84,5 @@ Current projects from [Portfolio](https://github.com/MirceaStefanescu/Portfolio#
 
 For a custom need beyond these examples, I can first assess feasibility and propose a bounded scope. Availability, total price and delivery dates are agreed for each project.
 
-[Discuss your project by email](mailto:stefanescumircea1990@gmail.com)
+[Discuss your project using the enquiry form](https://stefanescumircea1990.wordpress.com/software-services/?utm_source=github&utm_medium=portfolio&utm_campaign=it_services_202611#project-enquiry). Include reference **GITHUB-PORTFOLIO** if useful; [email](mailto:stefanescumircea1990@gmail.com) remains an alternative.
+
